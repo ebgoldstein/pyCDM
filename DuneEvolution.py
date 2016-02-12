@@ -35,7 +35,6 @@ def step_implementation():
         set_ustar(m_ustar0);
 		halfmeanLength = calcshear( m_h, m_tau, m_rho_veget );
 
-
         m_influx->set(m_flux_in, m_flux, m_Satflux_upwind, angle );
         m_gamma.SetAll(0.0);
         calcflux( m_flux_in, m_flux, m_h, m_h_nonerod, m_tau, m_gamma );
@@ -48,7 +47,7 @@ def step_implementation():
         m_dh_dt = (m_h - m_hprev) / m_dtmax;
 
     #update vegetation
-    m_veget_X0 = vegevol(m_rho_veget, time(), timestep, m_shoreline, m_h, m_dh_dt);
+    m_veget = vegevol(m_rho_veget, time, timestep, m_shoreline, m_h, m_dh_dt);
 
 
     #PROCESS DATA

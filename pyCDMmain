@@ -1,0 +1,10 @@
+#Main pyCDM script. runs the model
+
+#Make/get the initial conditions
+  #sand surface
+  #vegetation surface
+
+
+#for initial time: timestep: final time
+  #DuneEvolution
+  #save each increment
