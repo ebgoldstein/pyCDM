@@ -26,7 +26,12 @@ m_periodic_y = false;
 # Periodic boundary condition in x direction requires NX to be power of 2!
 # Periodic boundary condition in y direction requires NY to be power of 2!
 
-
+# VEgetation parameters
+m_Lveg=15; #distance for vegetation growth from shore (m)
+m_Tveg=1; #characteristic growth timescale (in days)
+m_sens=1; #sensitivity to burial
+m_Hveg=1; #characteristic vegetation height
+m_rho_max=1; #max vegetation density
 
 m_rho_fluid= 1.225; #density of air (kg.m^3)
 m_rho_grains= 2650; #density of grains (kg.m^3)

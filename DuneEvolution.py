@@ -19,7 +19,7 @@ import CDMparams
 import wind
 import shear
 import fluxstationary
-
+import vegetation
 
 
 def step_implementation():
@@ -40,12 +40,12 @@ def step_implementation():
         m_gamma.SetAll(0.0);
         calcflux( m_flux_in, m_flux, m_h, m_h_nonerod, m_tau, m_gamma );
 
-        m_hprev = m_h; // copy previous profile;
+        m_hprev = m_h; #copy previous profile;
         timestep= update_height(halfmeanLength);
 
 		calcavalanche(m_h, m_h_nonerod);
 
-        update_dhdt();
+        m_dh_dt = (m_h - m_hprev) / m_dtmax;
 
     #update vegetation
     m_veget_X0 = vegevol(m_rho_veget, time(), timestep, m_shoreline, m_h, m_dh_dt);
