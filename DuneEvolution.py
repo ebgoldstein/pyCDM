@@ -17,6 +17,7 @@ The method for time evolution is forward Euler.
 import numpy as np
 import CDMparams
 import wind
+import shear
 import fluxstationary
 
 
@@ -31,21 +32,26 @@ def step_implementation():
 			else:
 				m_Satflux_upwind = 0.0;
 
-        m_calcshear->set_ustar(m_ustar0);
-        if(m_calc_veget)
-			halfmeanLength = m_calcshear->Calc( m_h, m_tau, m_rho_veget ):
-        else:
-			halfmeanLength = m_calcshear->Calc( m_h, m_tau)
+        set_ustar(m_ustar0);
+		halfmeanLength = calcshear( m_h, m_tau, m_rho_veget );
+
 
         m_influx->set(m_flux_in, m_flux, m_Satflux_upwind, angle );
         m_gamma.SetAll(0.0);
-//       m_calcflux->waterlevel_factor(evolution::time()); // get temporal variation of wet-dry level
-        m_calcflux->calc( m_flux_in, m_flux, m_h, m_h_nonerod, m_tau, m_gamma );
+        calcflux( m_flux_in, m_flux, m_h, m_h_nonerod, m_tau, m_gamma );
 
         m_hprev = m_h; // copy previous profile;
         timestep= update_height(halfmeanLength);
-        m_avalanche->calc(m_h, m_h_nonerod);
+
+		calcavalanche(m_h, m_h_nonerod);
 
         update_dhdt();
 
-    }else{
+    #update vegetation
+    m_veget_X0 = vegevol(m_rho_veget, time(), timestep, m_shoreline, m_h, m_dh_dt);
+
+
+    #PROCESS DATA
+	#steps = time() / timestep;
+	#process = (steps % 50 == 0 ? 1 : 0);
+	#analyzeCalc(steps, time(), m_qin/m_Satflux_upwind/duneglobals::ny(), m_qout/m_Satflux_upwind/duneglobals::ny(), m_h, m_rho_veget);
