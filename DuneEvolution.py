@@ -17,13 +17,19 @@ The method for time evolution is forward Euler.
 import numpy as np
 import CDMparams
 import wind
+import fluxstationary
 
-m_ustar0=m_ustar;
+
 
 def step_implementation():
-	if m_ustar0 > 0.6*u_star_ft()):
-		if m_ustar0 > u_star_ft():
-			m_Satflux_upwind = (m_ustar0 > u_star_ft() ? m_calcflux->Satflux_upwind(m_ustar0) : 0.0);
+	m_ustar0=m_ustar;
+
+	if m_ustar0 > 0.6*u_star_ft:
+		if m_ustar0 > u_star_ft:
+			if m_ustar0 > u_star_ft:
+				m_Satflux_upwind =  Satflux_upwind(m_ustar0);
+			else:
+				m_Satflux_upwind = 0.0;
 
         m_calcshear->set_ustar(m_ustar0);
         if(m_calc_veget)
