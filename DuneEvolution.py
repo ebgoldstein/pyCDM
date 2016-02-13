@@ -23,31 +23,31 @@ import vegetation
 
 
 def step_implementation():
-	m_ustar0=m_ustar;
+	ustar0=ustar;
 
-	if m_ustar0 > 0.6*u_star_ft:
-		if m_ustar0 > u_star_ft:
-			if m_ustar0 > u_star_ft:
-				m_Satflux_upwind =  Satflux_upwind(m_ustar0);
+	if ustar0 > 0.6*u_star_ft:
+		if ustar0 > u_star_ft:
+			if ustar0 > u_star_ft:
+				Satflux_upwind =  Satflux_upwind(ustar0);
 			else:
-				m_Satflux_upwind = 0.0;
+				Satflux_upwind = 0.0;
 
-        set_ustar(m_ustar0);
-		halfmeanLength = calcshear( m_h, m_tau, m_rho_veget );
+        set_ustar(ustar0);
+		halfmeanLength = calcshear( h, tau, rho_veget );
 
-        m_influx->set(m_flux_in, m_flux, m_Satflux_upwind, angle );
-        m_gamma.SetAll(0.0);
-        calcflux( m_flux_in, m_flux, m_h, m_h_nonerod, m_tau, m_gamma );
+        influx->set(flux_in, flux, Satflux_upwind, angle );
+        gamma.SetAll(0.0);
+        calcflux( flux_in, flux, h, h_nonerod, tau, gamma );
 
-        m_hprev = m_h; #copy previous profile;
+        hprev = h; #copy previous profile;
         timestep= update_height(halfmeanLength);
 
-		calcavalanche(m_h, m_h_nonerod);
+		calcavalanche(h, h_nonerod);
 
-        m_dh_dt = (m_h - m_hprev) / m_dtmax;
+        dh_dt = (h - hprev) / dtmax;
 
     #update vegetation
-    m_veget = vegevol(m_rho_veget, time, timestep, m_shoreline, m_h, m_dh_dt);
+    veget = vegevol(rho_veget, time, timestep, shoreline, h, dh_dt);
 
 
     #PROCESS DATA

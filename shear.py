@@ -5,8 +5,8 @@ shear
 from CDMparams import *
 
 def set_ustar(u_star ):
-    m_u_star= u_star;
-    m_dTau0= u_star * u_star * rho_fluid;
+    u_star= u_star;
+    dTau0= u_star * u_star * rho_fluid;
 
 def calcshear(h,tau,rho_veget):
 
@@ -15,23 +15,23 @@ def calcshear(h,tau,rho_veget):
     if duneglobals::timing():
         clocktime= clock();
 
-    m_rho_veget_smooth = *rho_veget;
+    rho_veget_smooth = *rho_veget;
 
-    m_stall = m_stall-h_limit;
+    stall = stall-h_limit;
 
-    m_pSepBub->Calc(m_hSepBub, m_stall, h);
+    pSepBub->Calc(hSepBub, stall, h);
 
-    m_hSepBub_aux = m_hSepBub;
-    if (m_addsealevel):
-        if (m_hSepBub(x,y) < m_sealevel):
-            m_hSepBub_aux(x,y) = m_sealevel;
+    hSepBub_aux = hSepBub;
+    if (addsealevel):
+        if (hSepBub(x,y) < sealevel):
+            hSepBub_aux(x,y) = sealevel;
 
     #calc shear stress pertubation
-    L = CalcPertTau(m_hSepBub_aux, m_TauP);
+    L = CalcPertTau(hSepBub_aux, TauP);
 
 
     #tau (matrix)
-    factor= (1 - m_veget_m * m_rho_veget_smooth(x,y))*(1 + m_veget_m*m_veget_beta_sigma * m_rho_veget_smooth(x,y));
+    factor= (1 - veget_m * rho_veget_smooth(x,y))*(1 + veget_m*veget_beta_sigma * rho_veget_smooth(x,y));
     if factor > 0:
         factor= 1.0/factor
     else:
@@ -40,13 +40,13 @@ def calcshear(h,tau,rho_veget):
     tauZero= factor;
     tauOne=factor;
 
-    slope= tan(duneglobals::repose_dyn()*M_PI/180.0)*duneglobals::dx();
-    delta=1.0/(m_tau_sepbub*slope);
+    slope= tan(duneglobals::repose_dyn()*PI/180.0)*duneglobals::dx();
+    delta=1.0/(tau_sepbub*slope);
     for (int y=0; y<duneglobals::ny(); y++)
         for (int x=0; x<duneglobals::nx(); x++) {
             // Reducing the shear stress below separation surface (to mimic the
             //turbulence effects)
-            h_delta= 1 - delta*(m_hSepBub(x,y)-h(x,y));
+            h_delta= 1 - delta*(hSepBub(x,y)-h(x,y));
             if(h_delta < 0):
                  h_delta= 0.0;
             elif (h_delta > 1.0):
@@ -54,19 +54,19 @@ def calcshear(h,tau,rho_veget):
 
 
             // Acotation
-            if(m_TauP(x,y)[0] > 10):
-                 m_TauP(x,y)[0] = 10;
-            elif(m_TauP(x,y)[0] < -10):
-                 m_TauP(x,y)[0] = -10;
+            if(TauP(x,y)[0] > 10):
+                 TauP(x,y)[0] = 10;
+            elif(TauP(x,y)[0] < -10):
+                 TauP(x,y)[0] = -10;
 
-            if(m_TauP(x,y)[1] > 10):
-                 m_TauP(x,y)[1] = 10;
-            elif(m_TauP(x,y)[1] < -10):
-                 m_TauP(x,y)[1] = -10;
+            if(TauP(x,y)[1] > 10):
+                 TauP(x,y)[1] = 10;
+            elif(TauP(x,y)[1] < -10):
+                 TauP(x,y)[1] = -10;
 
             // Shear stress calculation
-            tauZero *= m_dTau0 * fabs( 1 + 0.5*m_TauP(x,y)[0])*( 1 + 0.5*m_TauP(x,y)[0]) * h_delta;
-            tauOne *= m_bTauY * m_dTau0 * fabs( 1 + 0.5*m_TauP(x,y)[0])*m_TauP(x,y)[1] * h_delta;
+            tauZero *= dTau0 * fabs( 1 + 0.5*TauP(x,y)[0])*( 1 + 0.5*TauP(x,y)[0]) * h_delta;
+            tauOne *= bTauY * dTau0 * fabs( 1 + 0.5*TauP(x,y)[0])*TauP(x,y)[1] * h_delta;
 
             if(tauZero < 0):
                  tauZero = 0;

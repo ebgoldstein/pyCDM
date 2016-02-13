@@ -18,7 +18,7 @@ from CDMparams import *
 
 
 #constant wind
-m_ustar = constwind;
-m_dir = 0; # onshore wind
+ustar = constwind;
+dir = 0; # onshore wind
 
 #real wind file
