@@ -1,5 +1,5 @@
 
-import CDMparams
+from CDMparams import *
 
 def u_star_at(ustar):
 	u_t = m_M * m_u_star_t - (m_M - 1.) * u_star;

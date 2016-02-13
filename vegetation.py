@@ -1,4 +1,4 @@
-import CDMparams
+from CDMparams import *
 
 
 #Vegetation parameters*/
@@ -32,3 +32,5 @@ def vegevol(rho_veget, time, timestep, shoreline, h, dh_dt):
         m_veget=1
     if m_veget<0:
         m_veget=0
+
+    return m_veget

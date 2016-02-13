@@ -15,7 +15,7 @@ The method for time evolution is forward Euler.
 """
 
 import numpy as np
-import CDMparams
+from CDMparams import *
 import wind
 import shear
 import fluxstationary

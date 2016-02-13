@@ -2,7 +2,7 @@
 shear
 """
 
-import CDMparams
+from CDMparams import *
 
 def set_ustar(u_star ):
     m_u_star= u_star;
