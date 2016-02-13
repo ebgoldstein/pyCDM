@@ -12,7 +12,7 @@ startstep= 0;
 starttime= 0.0;
 dt_max = 1000	# time step (constant, max is not important) (sec)
 Nt = 100000 	# number of iterations (such that total time is Nt*dt_max)
-rtime = 1; # fraction of the year wind is above threshold (only used for time scales) such that real time is Nt*dt_max / wind.frac
+timefrac = 1; # fraction of the year wind is above threshold (only used for time scales) such that real time is Nt*dt_max / wind.frac
 saveevery  = 100 	# nuber of iterations between saved files (such that the number of saved files are Nt/save.every)
 
 #space scales
@@ -33,6 +33,9 @@ Zmin=0; # threshold elevation for veg. growth: Z_veg (m) (DM15)
 sens=1; #sensitivity to burial
 Hveg=1; #characteristic vegetation height
 rho_max=1; #max vegetation density
+sensParam=sens/Hveg #sensitivityParameter from DM13
+Tvegs = Tveg * secday; #Tveg in seconds
+xmin = Lveg/dx; #calculate Lveg in model domain
 
 ## wind reduction due to vegetation (from Duran et al. 2008, geomorphology):
 vegetsigma = 0.80 	# ratio of plant basal to frontal area
