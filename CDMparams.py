@@ -144,11 +144,10 @@ def TopoDomain(shore_HMWL,shore_watertable,beach_angle,dx,nx,ny):
     ForeshoreDistance=(shore_HMWL- shore_watertable)/(np.tan(np.deg2rad(beach_angle)));
     ForeshoreCells=np.round(ForeshoreDistance/dx,0);
     #inclined foreshore (DM13)
-    Foreshore=np.arange(0,(shore_HMWL- shore_watertable+(((shore_HMWL- shore_watertable)/dx))),((shore_HMWL- shore_watertable)/dx));
+    Foreshore=np.linspace(0,(shore_HMWL- shore_watertable),ForeshoreCells)
     #flat backshore (DM13)
     BackshoreLength=nx-len(Foreshore);
-    Backshore=np.array([1,BackshoreLength]);
-    Backshore.fill(shore_HMWL- shore_watertable);
+    Backshore=np.full((BackshoreLength,1), (shore_HMWL- shore_watertable))
     #merge the foreshore to the backshore
     CrossShoreProfile=np.concatenate((Foreshore,Backshore))
     #tile it up to make the 2D domain
