@@ -14,6 +14,7 @@ dt_max = 1000	# time step (constant, max is not important) (sec)
 Nt = 100000 	# number of iterations (such that total time is Nt*dt_max)
 timefrac = 1; # fraction of the year wind is above threshold (only used for time scales) such that real time is Nt*dt_max / wind.frac
 saveevery  = 100 	# nuber of iterations between saved files (such that the number of saved files are Nt/save.every)
+timestep=dt_max;
 
 #space scales
 dx= 1;  			# (m)
@@ -27,14 +28,13 @@ threed= ny > 1;
 constwind = 0.2828 # shear velocity (m/s) (usually from 0.2 [~transport threshold] to 0.5 [very large winds]); 0.2828 is ~2*transport threshold
 
 # VEgetation parameters
-Lveg=15; #distance for vegetation growth from shore (m)
+Lveg=30; #distance for vegetation growth from shore (m)
 Tveg=1; #characteristic growth timescale (in days)
 Zmin=0; # threshold elevation for veg. growth: Z_veg (m) (DM15)
 sens=1; #sensitivity to burial
 Hveg=1; #characteristic vegetation height
 rho_max=1; #max vegetation density
 sensParam=sens/Hveg #sensitivityParameter from DM13
-Tvegs = Tveg * secday; #Tveg in seconds
 xmin = Lveg/dx; #calculate Lveg in model domain
 
 ## wind reduction due to vegetation (from Duran et al. 2008, geomorphology):
@@ -69,6 +69,7 @@ repose_dyn= 33; #dynamic angle of repose
 secday = 60*60*24; # seconds in a day
 secmonth = 60*60*24*30; # seconds in a month (30 days)
 secyear = 60*60*24*365; # seconds in a year (365 days)
+Tvegs = Tveg * secday; #Tveg in seconds
 
 #Parameters for flux calculation*/
 d_grain=  250e-6; #grain size in meters
@@ -150,7 +151,7 @@ def TopoDomain(shore_HMWL,shore_watertable,beach_angle,dx,nx,ny):
     Foreshore=np.linspace(0,(shore_HMWL- shore_watertable),ForeshoreCells)
     #flat backshore (DM13)
     BackshoreLength=nx-len(Foreshore);
-    Backshore=np.full((BackshoreLength,1), (shore_HMWL- shore_watertable))
+    Backshore=np.full((BackshoreLength), (shore_HMWL- shore_watertable))
     #merge the foreshore to the backshore
     CrossShoreProfile=np.concatenate((Foreshore,Backshore))
     #tile it up to make the 2D domain
