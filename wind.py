@@ -14,7 +14,7 @@ CDM has 5 types of wind:
 
 """
 
-import CDMparams
+from CDMparams import *
 
 
 #constant wind

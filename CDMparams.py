@@ -140,10 +140,11 @@ beta_2alpha_g_tau_ft = beta / (twoalpha_g * tau_ft);
 
 def TopoDomain(shore_HMWL,shore_watertable,beach_angle,dx,nx,ny):
     #how long is foreshore
+
     ForeshoreDistance=(shore_HMWL- shore_watertable)/(np.tan(np.deg2rad(beach_angle)));
     ForeshoreCells=ForeshoreDistance/dx;
     #inclined foreshore (DM13)
-    Foreshore=np.arange(0,(shore_HMWL- shore_watertable),((shore_HMWL- shore_watertable)/dx));
+    Foreshore=np.arange(0,(shore_HMWL- shore_watertable+(((shore_HMWL- shore_watertable)/dx))),((shore_HMWL- shore_watertable)/dx));
     #flat backshore (DM13)
     BackshoreLength=nx-len(Foreshore);
     Backshore=np.array([1,BackshoreLength]);

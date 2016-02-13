@@ -1,5 +1,5 @@
 #Main pyCDM script. runs the model
-import CDMparams
+from CDMparams import *
 
 #Make/get the initial conditions (should make these 3D for time)
 #sand surface
