@@ -1,7 +1,7 @@
 from CDMparams import *
 
-def vegevol(Veg, time, timestep, shoreline, h, dh_dt, sensParam, Tvegs, xmin, timefrac):
-
+#def vegevol(Veg, time, timestep, shoreline, h, dh_dt, sensParam, Tvegs, xmin, timefrac):
+def vegevol(Veg, Topo, dh_dt):
     #grow species
     V_gen = 1/Tvegs;
 
@@ -23,10 +23,8 @@ def vegevol(Veg, time, timestep, shoreline, h, dh_dt, sensParam, Tvegs, xmin, ti
     #cover fraction evolves (timefrac is the rescaled wind time)
     Veg= Veg + (timestep * dV * timefrac);
 
-    #limiting conditions (NEED TO VECTORIZE/ logical statements
-    if Veg>1:
-        Veg=1
-    if Veg<0:
-        Veg=0
+    #limiting conditions (can't have cover density greater than rhomax or less than 0))
+    Veg[Veg > 1] = 1;
+    Veg[Veg < 0] = 0;
 
-    return veget
+    return Veg
