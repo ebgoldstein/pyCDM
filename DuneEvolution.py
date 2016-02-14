@@ -27,7 +27,7 @@ def step_implementation(Veg,Topo,ustar):
 
 	if ustar0 > 0.6*u_star_ft:
 		if ustar0 > u_star_ft:
-			Satflux_upwind =  fluxstationary.Satflux_upwind(ustar0);
+			Satflux_upwind =  Satflux_upwind(ustar0);
 		else:
 			Satflux_upwind = 0.0;
 
@@ -46,7 +46,7 @@ def step_implementation(Veg,Topo,ustar):
         dhdt = (Topo - Topoprev) / dtmax;
 
     #update vegetation
-    Veg = vegetation.vegevol(Veg, Topo, dhdt);
+    Veg = vegevol(Veg, Topo, dhdt);
 
 
     #PROCESS DATA
