@@ -27,11 +27,11 @@ def step_implementation(Veg,Topo,ustar):
 
 	if ustar0 > 0.6*u_star_ft:
 		if ustar0 > u_star_ft:
-			Satflux_upwind =  Satflux_upwind(ustar0);
+			Satflux_upwind =  fluxstationary.Satflux_upwind(ustar0);
 		else:
 			Satflux_upwind = 0.0;
 
-        set_ustar(ustar0);
+        shear.set_ustar(ustar0);
 		halfmeanLength = calcshear( Topo, tau, Veg );
 
         influx->set(flux_in, flux, Satflux_upwind, angle );
