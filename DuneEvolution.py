@@ -22,35 +22,35 @@ import fluxstationary
 import vegetation
 
 
-def step_implementation():
+def step_implementation(Veg,Topo,ustar):
 	ustar0=ustar;
 
 	if ustar0 > 0.6*u_star_ft:
 		if ustar0 > u_star_ft:
-			if ustar0 > u_star_ft:
-				Satflux_upwind =  Satflux_upwind(ustar0);
-			else:
-				Satflux_upwind = 0.0;
+			Satflux_upwind =  Satflux_upwind(ustar0);
+		else:
+			Satflux_upwind = 0.0;
 
         set_ustar(ustar0);
-		halfmeanLength = calcshear( h, tau, rho_veget );
+		halfmeanLength = calcshear( Topo, tau, Veg );
 
         influx->set(flux_in, flux, Satflux_upwind, angle );
         gamma.SetAll(0.0);
-        calcflux( flux_in, flux, h, h_nonerod, tau, gamma );
+        calcflux( flux_in, flux, Topo, h_nonerod, tau, gamma );
 
-        hprev = h; #copy previous profile;
+        Topoprev = Topo; #copy previous profile;
         timestep= update_height(halfmeanLength);
 
-		calcavalanche(h, h_nonerod);
+		calcavalanche(Topo, h_nonerod);
 
-        dh_dt = (h - hprev) / dtmax;
+        dhdt = (Topo - Topoprev) / dtmax;
 
     #update vegetation
-    veget = vegevol(rho_veget, time, timestep, shoreline, h, dh_dt);
+    Veg = vegetation.vegevol(Veg, Topo, dhdt);
 
 
     #PROCESS DATA
 	#steps = time() / timestep;
 	#process = (steps % 50 == 0 ? 1 : 0);
 	#analyzeCalc(steps, time(), m_qin/m_Satflux_upwind/duneglobals::ny(), m_qout/m_Satflux_upwind/duneglobals::ny(), m_h, m_rho_veget);
+	return Veg,Topo

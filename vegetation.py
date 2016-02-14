@@ -21,7 +21,7 @@ def vegevol(Veg, Topo, dhdt):
     dV = ((1 - Veg ) * V_gen * shorefactor)- (abs(dhdt) * sensParam);
 
     #cover fraction evolves (timefrac is the rescaled wind time)
-    Veg= Veg + (dt_max * dV * timefrac);
+    Veg= Veg + (timestep * dV * timefrac);
 
     #limiting conditions (can't have cover density greater than rhomax or less than 0))
     Veg[Veg > 1] = 1;
