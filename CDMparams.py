@@ -145,3 +145,6 @@ tau_t= rho_fluid * u_star_t * u_star_t;
 twoalpha_g= 2.0*alpha / g;
 gamma_2alpha_g2= gamma / (twoalpha_g * twoalpha_g);
 beta_2alpha_g_tau_ft = beta / (twoalpha_g * tau_ft);
+
+#from shear.cc
+h_limit= 1e-3

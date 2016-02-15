@@ -19,17 +19,17 @@ from CDMparams import *
 import CDMfunctions as cdm
 
 
-def step_implementation(Veg,Topo,ustar):
+def step_implementation(Veg,Topo,Tau,ustar):
 	ustar0=ustar;
 
 	if ustar0 > 0.6*u_star_ft:
 		if ustar0 > u_star_ft:
-			Satflux_upwind =  Satflux_upwind(ustar0);
+			Satflux_upwind =  cdm.Satflux_upwind(ustar0);
 		else:
 			Satflux_upwind = 0.0;
 
-        shear.set_ustar(ustar0);
-		halfmeanLength = calcshear( Topo, tau, Veg );
+        dTau0=cdm.set_ustar(ustar0);
+		halfmeanLength = cdm.calcshear( Topo, Tau, Veg );
 
         influx->set(flux_in, flux, Satflux_upwind, angle );
         gamma.SetAll(0.0);
@@ -43,7 +43,7 @@ def step_implementation(Veg,Topo,ustar):
         dhdt = (Topo - Topoprev) / dtmax;
 
     #update vegetation
-    Veg = vegevol(Veg, Topo, dhdt);
+    Veg = cdm.vegevol(Veg, Topo, dhdt);
 
 
     #PROCESS DATA
@@ -58,10 +58,12 @@ def step_implementation(Veg,Topo,ustar):
 #Main pyCDM script. runs the model
 
 #Make/get the initial conditions (should make these 3D for time)
-#sand surface
-Topo=TopoDomain(shore_HMWL,shore_watertable,beach_angle,dx,nx,ny)
-#vegetation surface
-Veg=VegDomain(nx,ny)
+#sand domain
+Topo=cdm.TopoDomain(shore_HMWL,shore_watertable,beach_angle,dx,nx,ny)
+#vegetation domain
+Veg=cdm.VegDomain(nx,ny)
+#shear stress domain
+Tau=cdm.TauDomain(nx,ny)
 
 
 #for initial time: timestep: final time
