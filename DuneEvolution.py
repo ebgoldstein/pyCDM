@@ -29,6 +29,8 @@ def step_implementation(Veg,Topo,Tau,ustar):
 			Satflux_upwind = 0.0;
 
         dTau0=cdm.set_ustar(ustar0);
+
+		#HERE I AM
 		halfmeanLength = cdm.calcshear( Topo, Tau, Veg );
 
         influx->set(flux_in, flux, Satflux_upwind, angle );
