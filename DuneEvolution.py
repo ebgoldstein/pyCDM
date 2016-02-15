@@ -16,10 +16,7 @@ The method for time evolution is forward Euler.
 
 import numpy as np
 from CDMparams import *
-import wind
-import shear
-import fluxstationary
-import vegetation
+import CDMfunctions as cdm
 
 
 def step_implementation(Veg,Topo,ustar):
@@ -54,3 +51,19 @@ def step_implementation(Veg,Topo,ustar):
 	#process = (steps % 50 == 0 ? 1 : 0);
 	#analyzeCalc(steps, time(), m_qin/m_Satflux_upwind/duneglobals::ny(), m_qout/m_Satflux_upwind/duneglobals::ny(), m_h, m_rho_veget);
 	return Veg,Topo
+
+
+
+
+#Main pyCDM script. runs the model
+
+#Make/get the initial conditions (should make these 3D for time)
+#sand surface
+Topo=TopoDomain(shore_HMWL,shore_watertable,beach_angle,dx,nx,ny)
+#vegetation surface
+Veg=VegDomain(nx,ny)
+
+
+#for initial time: timestep: final time
+  #step_implementation(Veg,Topo,ustar)
+  #save each increment
