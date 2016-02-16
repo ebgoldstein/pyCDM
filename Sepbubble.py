@@ -20,11 +20,8 @@ def Calc(h_sepbub, stall, h):
     #double dhdxb, hb, C, B, l; //, h_plain=1e2;
 
     # Detect flow separation
-    grad_h=np.zeros((ny,nx))
-
-    # ??? grad_h.GradMid(h);
-
-    #?? grad_h_down.GradUpWind(h, grad_h);
+    GradMid=np.gradient(h)
+    #grad_h_down.GradUpWind(h, grad_h);
 
     h_plain=np.zeros((ny,nx))
     grad_h_x=np.zeros((ny,nx))
@@ -50,14 +47,19 @@ def Calc(h_sepbub, stall, h):
 		}
 	}
     for (int y=0; y< duneglobals::ny(); y++){
-    	for (int x=duneglobals::nx()-1; x > -1; x--){
-            if(grad_h_x(x,y)>= 0 && grad_h_x((!x ? duneglobals::nx()-2 : x-1),y)<0)	h_plain(x,y) = h(x,y);
-    		else h_plain(x,y)= h_plain((x==duneglobals::nx()-1?1:x+1),y);
-            if(h_plain(x,y) < 0)	h_plain(x,y)= 0;
-            if(h_plain(x,y)>=h(x,y))	h_plain(x,y)= h(x,y);
-		}
-        if(m_x_periodic)	h_plain(duneglobals::nx()-1,y)= h_plain(0,y);
-	}
+    	for (int x=duneglobals::nx()-1; x > -1; x--)
+            if(grad_h_x(x,y)>= 0 && grad_h_x((!x ? duneglobals::nx()-2 : x-1),y)<0):
+                	h_plain(x,y) = h(x,y);
+    		else:
+                 h_plain(x,y)= h_plain((x==duneglobals::nx()-1?1:x+1),y);
+            if(h_plain(x,y) < 0):
+                	h_plain(x,y)= 0;
+            if(h_plain(x,y)>=h(x,y)):
+                	h_plain(x,y)= h(x,y);
+
+        if(m_x_periodic):
+            h_plain(duneglobals::nx()-1,y)= h_plain(0,y);
+
 
     // calculation of the separation bubble at the brink,
     // sliced model, (2d), y is considered as a parameter!for (int i=0; i<abs(m_Smooth); i++) {
