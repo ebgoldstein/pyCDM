@@ -30,9 +30,13 @@ def Calc(h_sepbub, stall, h):
     grad_h_x=np.zeros((ny,nx))
 
     #matrix
-    if(x < duneglobals::nx()-1 && stall(x+1,y) < 0 && stall(x,y) > 0)	stall(x+1,y)= 0;
-        (*m_pMask)(x,y) = (stall(x,y) < 0 && grad_h_down(x,y)[0] < 0 && vabs(grad_h_down(x,y)) > m_sepslope ? 1.0 : -1.0);
-        grad_h_x(x,y)= grad_h(x,y)[0];
+    #if we are not at the back edge, AND stall at the forward cell is less than 1 AND stall at the given cell is >1
+    #
+    if(x < duneglobals::nx()-1 && stall(x+1,y) < 0 && stall(x,y) > 0):
+        stall(x+1,y)= 0;
+
+    (*m_pMask)(x,y) = (stall(x,y) < 0 && grad_h_down(x,y)[0] < 0 && vabs(grad_h_down(x,y)) > m_sepslope ? 1.0 : -1.0);
+    grad_h_x(x,y)= grad_h(x,y)[0];
 
     /* Smoothing h_plain */
     for (int i=0; i<10 +0*abs(m_Smooth); i++) {

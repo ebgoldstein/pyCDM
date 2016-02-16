@@ -69,7 +69,7 @@ def set_ustar(u_star ):
 
 def calcshear(Topo,Veg):
 
-    stall = stall-h_limit;
+    stall = h_limit*np.ones((ny,nx));
 
     #HERE I AM
     calcsepbubble(hSepBub, stall, Topo);
