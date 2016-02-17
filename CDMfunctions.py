@@ -74,14 +74,8 @@ def calcshear(Topo,Veg):
     #HERE I AM
     calcsepbubble(hSepBub, stall, Topo);
 
-    hSepBub_aux = hSepBub;
-    if (addsealevel):
-        if (hSepBub(x,y) < sealevel):
-            hSepBub_aux(x,y) = sealevel;
-
     #calc shear stress pertubation
     L = CalcPertTau(hSepBub_aux, TauP);
-
 
     #tau (matrix)
     factor= (1 - (vegetm * Veg))*(1 + (vegetm*(vegetbeta/vegetsigma) * Veg));

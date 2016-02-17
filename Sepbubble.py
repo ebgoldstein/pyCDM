@@ -61,23 +61,32 @@ def Calc(h_sepbub, stall, h):
             h_plain(duneglobals::nx()-1,y)= h_plain(0,y);
 
 
-    // calculation of the separation bubble at the brink,
-    // sliced model, (2d), y is considered as a parameter!for (int i=0; i<abs(m_Smooth); i++) {
+    # calculation of the separation bubble at the brink,
+    # sliced model, (2d), y is considered as a parameter!for (int i=0; i<abs(m_Smooth); i++) {
 
     for (int y=0; y<Ny; y++)
     {
-        int x= 0, x_sep= 0, x_brink= 0, x_slope= 0, x_next= 0, x_index;
+        x= 0,
+        x_sep= 0,
+        x_brink= 0,
+        x_slope= 0,
+        x_next= 0,
+        x_index;
         while(x < Nx){
             // Assume no separation
             h_sepbub(x,y) = h(x,y);
-            // Looking for separation
-            if(x<4){
-                if(m_x_periodic)	x_brink = Nx-1+(x-1);
-            }else	x_brink = x-1;
-            if(x==Nx-1)	x_next=(m_x_periodic ? 0 : x);
-            else	x_next= x+1;
-            if((x>3 || m_x_periodic) && stall(x,y)>0 && stall(x_brink,y)<0 && h(x,y) > h(x_next,y))
-            {
+            # Looking for separation
+            if(x<4):
+                if(m_x_periodic):
+                    	x_brink = Nx-1+(x-1);
+            else:
+                x_brink = x-1;
+            if(x==Nx-1):
+                x_next=(m_x_periodic ? 0 : x);
+            else:
+                x_next= x+1;
+            if((x>3 || m_x_periodic) && stall(x,y)>0 && stall(x_brink,y)<0 && h(x,y) > h(x_next,y)):
+            
                 // x:   first slip face point
                 // x_brink=x-1: crest/brink point (not used due to high
                 //      fluctuations while moving along the grid.
