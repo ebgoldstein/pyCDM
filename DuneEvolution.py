@@ -66,11 +66,15 @@ Step 1: shear stress field
 
 def shearfield(Topo, Veg, Tau):
 
-    #if brink (slope of 20 deg or greater; Duran and Moore 2013)
-        #separation bubble
+    #find the local slope
+    localslope=np.diff(Topo)
+
+    #if (slope of 20 deg or greater its a brink; Duran and Moore, 2013)
+        #separation bubble; 3rd order polynomial
         #make new combined surface
+        Topowind=np.maximum(SepBubble,Topo)
     #else
-        # Topowind =Topo
+        Topowind =Topo
 
     #calculate tau perterbation
 
@@ -84,14 +88,23 @@ def shearfield(Topo, Veg, Tau):
 """
 Step 2: sand flux  field
 """
+def sandfluxfield(Topo, Tau):
+
+return Flux
 
 """
 Step 3: flux divergence and building topo
 """
+def fluxgradient(Topo,Flux):
+
+    return Topo, dhdt
 
 """
 Step 4: avalanche
 """
+def avalanche(Topo,dhdt):
+
+    return Topo, dhdt
 
 """
 Step 5: shear stress field
