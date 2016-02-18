@@ -58,24 +58,47 @@ def shearfield(Topo, Veg, Tau):
 
 
 
-def step_implementation(Veg,Topo,Tau,ustar):
 
-	#1. Compute the stress field
 
-	#2. Compute the flux field
 
-	#3. Compute flux divergence and update topo
 
-	#4. Poll the grid for avalanches
 
-    #5. Compute the vegetation field
-    Veg = cdmfns.vegevol(Veg, Topo, dhdt);
+"""
+Step 5: shear stress field
+"""
 
-	return Veg,Topo
+def vegevol(Veg, Topo, dhdt):
+    #grow species
+    V_gen = 1/Tvegs;
 
+    #ADD Line for rho competition > rho max, then rho max
+
+    #Heaviside for Lveg
+    #calculate Lveg in model domain; probably won;t work with a moving boundary yet
+    xmin = Lveg/dx;
+    NoVeg=np.full((xmin),0);
+    GrowVeg=np.full((nx-xmin),1);
+    shorefactorprofile=np.concatenate((NoVeg,GrowVeg));
+    shorefactor=np.tile(shorefactorprofile,(ny,1))
+
+    #growth
+    dV = ((1 - Veg ) * V_gen * shorefactor)- (abs(dhdt) * sensParam);
+
+    #cover fraction evolves (timefrac is the rescaled wind time)
+    Veg= Veg + (timestep * dV * timefrac);
+
+    #limiting conditions (can't have cover density greater than rhomax or less than 0))
+    Veg[Veg > 1] = 1;
+    Veg[Veg < 0] = 0;
+
+    return Veg
+
+"""
+Implement all 5 steps in a row, with a time step..
+This is the main script, which runs the model
+"""
 
 def runCDM:
-    #Main pyCDM script. runs the model
 
     #MAKE THE INITIAL CONDIITONS!
     # (should make these 3D for time)
@@ -88,9 +111,17 @@ def runCDM:
 
 
     #for initial time: timestep: final time
+	   #1. Compute the stress field
 
-    # move for 1 step
-    step_implementation(Veg,Topo,Tau,ustar)
+       #2. Compute the flux field
 
-    #save topo and veg each increment
+       #3. Compute flux divergence and update topo
+
+       #4. Poll the grid for avalanches
+
+       #5. Compute the vegetation field
+       Veg = vegevol(Veg, Topo, dhdt);
+
+       #save topo and veg each increment
+
     return Topo, Veg
