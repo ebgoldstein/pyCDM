@@ -33,6 +33,32 @@ import numpy as np
 from CDMparams import *
 import CDMfunctions as cdmfns
 
+"""
+Build the initial grids
+"""
+def TopoDomain(shore_HMWL,shore_watertable,beach_angle,dx,nx,ny):
+    #how long is foreshore (round up to nearest meter)
+    ForeshoreDistance=(shore_HMWL- shore_watertable)/(np.tan(np.deg2rad(beach_angle)));
+    ForeshoreCells=np.round(ForeshoreDistance/dx,0);
+    #inclined foreshore (DM13)
+    Foreshore=np.linspace(0,(shore_HMWL- shore_watertable),ForeshoreCells)
+    #flat backshore (DM13)
+    BackshoreLength=nx-len(Foreshore);
+    Backshore=np.full((BackshoreLength), (shore_HMWL- shore_watertable))
+    #merge the foreshore to the backshore
+    CrossShoreProfile=np.concatenate((Foreshore,Backshore))
+    #tile it up to make the 2D domain
+    Topo=np.tile(CrossShoreProfile,(ny,1))
+    return Topo
+
+def VegDomain(nx,ny):
+    Veg=np.zeros((ny,nx))
+    return Veg
+
+def TauDomain(nx,ny):
+    Tau=np.zeros((ny,nx))
+    return Tau
+
 
 """
 Step 1: shear stress field
@@ -55,13 +81,17 @@ def shearfield(Topo, Veg, Tau):
     return Tau
 
 
+"""
+Step 2: sand flux  field
+"""
 
+"""
+Step 3: flux divergence and building topo
+"""
 
-
-
-
-
-
+"""
+Step 4: avalanche
+"""
 
 """
 Step 5: shear stress field
@@ -103,11 +133,11 @@ def runCDM:
     #MAKE THE INITIAL CONDIITONS!
     # (should make these 3D for time)
     #sand domain
-    Topo=cdmfns.TopoDomain(shore_HMWL,shore_watertable,beach_angle,dx,nx,ny)
+    Topo=TopoDomain(shore_HMWL,shore_watertable,beach_angle,dx,nx,ny)
     #vegetation domain
-    Veg=cdmfns.VegDomain(nx,ny)
+    Veg=VegDomain(nx,ny)
     #shear stress domain
-    Tau=cdmfns.TauDomain(nx,ny)
+    Tau=TauDomain(nx,ny)
 
 
     #for initial time: timestep: final time
