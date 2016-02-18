@@ -32,14 +32,12 @@ def vegevol(Veg, Topo, dhdt):
     #ADD Line for rho competition > rho max, then rho max
 
     #Heaviside for Lveg
-    #calculate Lveg in model domain; so moving boundary will be hard...
+    #calculate Lveg in model domain; probably won;t work with a moving boundary yet
     xmin = Lveg/dx;
     NoVeg=np.full((xmin),0);
     GrowVeg=np.full((nx-xmin),1);
     shorefactorprofile=np.concatenate((NoVeg,GrowVeg));
     shorefactor=np.tile(shorefactorprofile,(ny,1))
-
-    # make dhdt grid
 
     #growth
     dV = ((1 - Veg ) * V_gen * shorefactor)- (abs(dhdt) * sensParam);

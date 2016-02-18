@@ -2,9 +2,9 @@
 rewrite of CDM by EBG 2/16
 
 This is the function which computes the actual change in the surface
-profile. The CDM operates by iterating over 5 operations using 2 state variables:
+profile. The CDM operates by iterating over 5 operations with 2 states:
 
-The State Variables are:
+The States are:
  	-'Topo' (the topographic domain)
 	-'Veg' (the vegetation field)
 
@@ -31,7 +31,7 @@ The 5 operations are:
 
 import numpy as np
 from CDMparams import *
-import CDMfunctions as cdm
+import CDMfunctions as cdmfns
 
 
 def step_implementation(Veg,Topo,Tau,ustar):
@@ -45,6 +45,6 @@ def step_implementation(Veg,Topo,Tau,ustar):
 	#4. Poll the grid for avalanches
 
     #5. Compute the vegetation field
-    Veg = cdm.vegevol(Veg, Topo, dhdt);
+    Veg = cdmfns.vegevol(Veg, Topo, dhdt);
 
 	return Veg,Topo

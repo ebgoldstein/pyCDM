@@ -5,7 +5,7 @@ rewrite of CDM by EBG 2/16
 
 """
 import numpy as np
-import CDMfunctions as cdm
+import CDMfunctions as cdmfns
 
 
 #time scales
