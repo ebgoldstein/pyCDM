@@ -31,7 +31,6 @@ ustar = constwind;
 wdir = 0; # onshore wind
 
 
-
 # VEgetation parameters
 Lveg=30; #distance for vegetation growth from shore (m)
 Tveg=1; #characteristic growth timescale (in days)
@@ -83,6 +82,10 @@ fluid_viscosity_kin = fluid_viscosity / rho_fluid;	#kinematic viscosity
 g=  9.8; #gravity
 
 s = rho_grains / rho_fluid;
+
+
+#___________________________________________________________________?
+
 Aft = 0.11; #Bagnold-shields_parameter
 At = 0.8 * Aft;
 u_star_ft = Aft * np.sqrt(g*d_grain*(s-1.));
