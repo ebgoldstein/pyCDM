@@ -34,6 +34,30 @@ from CDMparams import *
 import CDMfunctions as cdmfns
 
 
+"""
+Step 1: shear stress field
+"""
+
+def shearfield(Topo, Veg, Tau):
+
+    #if brink (slope of 20 deg or greater; Duran and Moore 2013)
+        #separation bubble
+        #make new combined surface
+    #else
+        # Topowind =Topo
+
+    #calculate tau perterbation
+
+    #calculate combined tau
+
+    #calculate reduction factor for Vegetation
+
+    return Tau
+
+
+
+
+
 def step_implementation(Veg,Topo,Tau,ustar):
 
 	#1. Compute the stress field
@@ -48,3 +72,25 @@ def step_implementation(Veg,Topo,Tau,ustar):
     Veg = cdmfns.vegevol(Veg, Topo, dhdt);
 
 	return Veg,Topo
+
+
+def runCDM:
+    #Main pyCDM script. runs the model
+
+    #MAKE THE INITIAL CONDIITONS!
+    # (should make these 3D for time)
+    #sand domain
+    Topo=cdmfns.TopoDomain(shore_HMWL,shore_watertable,beach_angle,dx,nx,ny)
+    #vegetation domain
+    Veg=cdmfns.VegDomain(nx,ny)
+    #shear stress domain
+    Tau=cdmfns.TauDomain(nx,ny)
+
+
+    #for initial time: timestep: final time
+
+    # move for 1 step
+    step_implementation(Veg,Topo,Tau,ustar)
+
+    #save topo and veg each increment
+    return Topo, Veg
