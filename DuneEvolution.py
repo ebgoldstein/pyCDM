@@ -65,21 +65,34 @@ Step 1: shear stress field
 
 def shearfield(Topo, Veg, Tau):
 
-    #find the local slope
-    localslope=np.diff(Topo)
+    #find the local slope (offset by 1 in the x direction)
+    localslope=100*np.diff(Topo)*(1/dx)
 
-    #if (slope of 20 deg or greater it's a brink; Duran and Moore, 2013)
-        #separation bubble; 3rd order polynomial
+    # if anwhere in the domain there is a slope of -20 deg or less, it's a brink
+    if np.amin(localslope)<-20:
+
+        #make a new array highlighting the cell of the brink
+        #(need to add a column at the end b/c slope domain is 1 less col. than actual domain)
+        SepBubble=np.concatenate(localslope,np.zeros((ny,1)))
+        SepBubble[SepBubble >= -20] = 0
+        SepBubble[SepBubble < -20] = 1
+
+        #build a separation bubble from brink to surface; 3rd order polynomial
+
         #make new combined surface
         Topowind=np.maximum(SepBubble,Topo)
-    #else
+
+    else:
         Topowind =Topo
 
-    #calculate tau perterbation
+    #calculate tau perterbation using Weng et al 1991
 
-    #calculate combined tau
+    #calculate total tau
 
-    #calculate reduction factor for Vegetation
+    #calculate reduction factor for vegetation
+    #(should replace with Okin eventually)
+
+    #all locations of seperation bubble sites have zero tau
 
     return Tau
 
@@ -150,7 +163,6 @@ def runCDM:
     Veg=VegDomain(nx,ny)
     #shear stress domain
     Tau=TauDomain(nx,ny)
-
 
     #for initial time: timestep: final time
 	   #1. Compute the stress field
