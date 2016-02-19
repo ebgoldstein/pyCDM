@@ -1,8 +1,7 @@
 """
 rewrite of CDM by EBG 2/16
 
-This is the function which computes the actual change in the surface
-profile. The CDM operates by iterating over 5 operations with 2 states:
+The CDM operates by iterating over 5 operations with 2 states:
 
 The States are:
  	-'Topo' (the topographic domain)
@@ -69,7 +68,7 @@ def shearfield(Topo, Veg, Tau):
     #find the local slope
     localslope=np.diff(Topo)
 
-    #if (slope of 20 deg or greater its a brink; Duran and Moore, 2013)
+    #if (slope of 20 deg or greater it's a brink; Duran and Moore, 2013)
         #separation bubble; 3rd order polynomial
         #make new combined surface
         Topowind=np.maximum(SepBubble,Topo)
