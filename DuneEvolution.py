@@ -10,12 +10,11 @@ The States are:
 The 5 operations are:
 	1) Compute the shear stress field. The shear stress field is computed by
 		using the u* defined for each time iteration and the surface topography.
-		The surface topography sets the shear stress through a linearized RANS
+		The surface topography sets the shear stress through a analytical
 		formulation (Weng et al. 1991). This is an analytical solution utilizing
 		a fourier transform. The topographic surface is
 		modified by the existence of a seperation bubble when there is a dune
-		brink. The resultant shear stress, from the linearized RANS formulation,
-		is then modified by the vegetation field
+		brink. The resultant shear stress is then modified by the vegetation field
 	2) A sand flux field is computed from the shear stress field. Flux in the
 		separation zone is set to 0.
 	3) The flux divergence is computed for a given time interval (forward Euler)
