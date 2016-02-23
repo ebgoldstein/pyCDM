@@ -54,12 +54,16 @@ def VegDomain(nx,ny):
     return Veg
 
 def TauDomain(nx,ny):
-    Tau=np.zeros((ny,nx))
+    Tau=np.ones((ny,nx))
     return Tau
 
 
 """
 Step 1: shear stress field
+
+TO DO:
+    seperation bubble is only in 2D
+    No wind routine yet (weng )
 """
 
 def shearfield(Topo, Veg, Tau):
@@ -76,7 +80,13 @@ def shearfield(Topo, Veg, Tau):
         SepBubble[SepBubble >= -20] = 0
         SepBubble[SepBubble < -20] = 1
 
-        #build a separation bubble from brink to surface; 3rd order polynomial
+        #build a separation bubble from brink to surface; 3rd order polynomial (clamped spline)
+        #find index of the brink
+        Brink=np.argwhere(SepBubble = 1);
+        #from 2 spaces away to the end of the grid, solve the clamped spline equation
+        #record max slope at mid point
+        #pick first value of mid point slope below 0.14
+        #interpolate to make the seperation bubble
 
         #make new combined surface
         Topowind=np.maximum(SepBubble,Topo)
@@ -86,13 +96,14 @@ def shearfield(Topo, Veg, Tau):
 
     #calculate tau perterbation using Weng et al 1991
     if ny=1: #Weng et al 1991 EQN 2.8
+        TauPert=
 
 
     else:   #Weng et al 1991 EQN 2.14a,b
 
 
-    #calculate total tau
-    Ttau
+    #calculate total tau by adding the perturbation
+    Ttau=Tau+TauPert
 
     #all locations of seperation bubble sites have zero tau
     Stau=np.where((SepBubble==1),0,Ttau)
@@ -107,6 +118,9 @@ def shearfield(Topo, Veg, Tau):
 
 """
 Step 2: sand flux  field
+
+to do:
+    -All of it
 """
 def sandfluxfield(Topo, Tau):
 
@@ -114,6 +128,10 @@ return Flux
 
 """
 Step 3: flux divergence and building topo
+
+to do:
+    -All of it
+
 """
 def fluxgradient(Topo,Flux):
 
@@ -121,13 +139,19 @@ def fluxgradient(Topo,Flux):
 
 """
 Step 4: avalanche
+
+to do:
+    -All of it
+
 """
 def avalanche(Topo,dhdt):
 
     return Topo, dhdt
 
 """
-Step 5: shear stress field
+Step 5: Vegetation growth
+
+    This is done
 """
 
 def vegevol(Veg, Topo, dhdt):
@@ -159,6 +183,9 @@ def vegevol(Veg, Topo, dhdt):
 """
 Implement all 5 steps in a row, with a time step..
 This is the main script, which runs the model
+
+    To do:
+        -Fill in the master loop and add a counter for time steps
 """
 
 def runCDM:
@@ -169,17 +196,23 @@ def runCDM:
     Topo=TopoDomain(shore_HMWL,shore_watertable,beach_angle,dx,nx,ny)
     #vegetation domain
     Veg=VegDomain(nx,ny)
-    #shear stress domain
-    Tau=TauDomain(nx,ny)
 
     #for initial time: timestep: final time
-	   #1. Compute the stress field
+
+       #0. Set the wind
+       Tau=np.ones((ny,nx))*(ustar*ustar*rho_fluid)
+
+       #1. Compute the stress field
+       Tau=shearfield(Topo, Veg, Tau)
 
        #2. Compute the flux field
+       Flux=sandfluxfield(Topo, Tau)
 
        #3. Compute flux divergence and update topo
+       Topo, dhdt = fluxgradient(Topo,Flux)
 
        #4. Poll the grid for avalanches
+       Topo,dhdt = avalanche(Topo,dhdt)
 
        #5. Compute the vegetation field
        Veg = vegevol(Veg, Topo, dhdt);
