@@ -80,13 +80,32 @@ def shearfield(Topo, Veg, Tau):
         SepBubble[SepBubble >= -20] = 0
         SepBubble[SepBubble < -20] = 1
 
-        #build a separation bubble from brink to surface; 3rd order polynomial (clamped spline)
+        #build a separation bubble from brink to surface;
+        #
+        #3rd order polynomial (clamped spline)
+        #MAX slope is 14 degrees or 0.244346 radians (Kroy et al 2002)
         #find index of the brink
-        Brink=np.argwhere(SepBubble = 1);
-        #from 2 spaces away to the end of the grid, solve the clamped spline equation
-        #record max slope at mid point
+        Brink=np.argwhere(SepBubble == 1);
+        #return the topography after the Brink
+        #note that this next line works for only a 1D array
+        TunderSB=Topo[Brink[0]:Topo.size+1]
+        xx=np.arange(1,TunderSB.size-1)
+        y=Topo[Brink[0]]
+        yy=TunderSB[1:TunderSB.size+1]
+        SBt=0.5
+        SBa=-(yy-y)
+        SBb=+(yy-y)
+        #solve the clamped spline equation to get max slope at midpoint
+        slope=np.tan(  ((yy-y)/(xx)) + ((0.25)*((SBb-SBa)/(xx))) )
+        reattachment=np.argwhere(slope>-0.245)
         #pick first value of mid point slope below 0.14
+        #SLOPE IS TOO HIGH AT FIRST CELL???
+        reattachment=np.argwhere(slope > -0.245)
+
+        #use that index, and add it to the Brink
+
         #interpolate to make the seperation bubble
+
 
         #make new combined surface
         Topowind=np.maximum(SepBubble,Topo)
