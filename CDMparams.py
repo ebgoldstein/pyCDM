@@ -20,7 +20,7 @@ timestep=dt_max;
 #space scales
 dx= 1;  			# (m)
 nx= 100; 			# number of grid columns
-ny= 4; 			# number of grid lines (c1: must be power of 2; c2: 4 is for 2D, higher for 3D)
+ny= 1; 			# number of grid lines (c1: must be power of 2; c2: 4 is for 2D, higher for 3D)
 length= nx*dx;
 width= ny*dx;
 threed= ny > 1;
@@ -45,6 +45,8 @@ xmin = Lveg/dx; #calculate Lveg in model domain
 vegetsigma = 0.80 	# ratio of plant basal to frontal area
 vegetbeta 	= 150	# ratio of plant drag coefficitent to bare sand drag
 vegetm 	= 0.16	# reduction parameter (empirical fitting parameter)
+#combined Roughness from Duran & Moore (2013)
+vegetgamma= (vegetm*vegetbeta)/vegetsigma
 # Roughness factor from Duran & Moore (2013) =veget.m * veget.beta / veget.sigma
 
 rho_fluid= 1.225; #density of air (kg.m^3)

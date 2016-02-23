@@ -85,13 +85,22 @@ def shearfield(Topo, Veg, Tau):
         Topowind =Topo
 
     #calculate tau perterbation using Weng et al 1991
+    if ny=1: #Weng et al 1991 EQN 2.8
+
+
+    else:   #Weng et al 1991 EQN 2.14a,b
+
 
     #calculate total tau
-
-    #calculate reduction factor for vegetation
-    #(should replace with Okin eventually)
+    Ttau
 
     #all locations of seperation bubble sites have zero tau
+    Stau=np.where((SepBubble==1),0,Ttau)
+
+    #calculate reduction factor for vegetation
+    #(could replace with Okin)
+    Vtau=Tau/(1+(vegetgamma*Veg))
+    Tau=np.where((Veg > 0), Vtau, Stau)
 
     return Tau
 
