@@ -89,17 +89,15 @@ def shearfield(Topo, Veg, Tau):
         #return the topography after the Brink
         #note that this next line works for only a 1D array
         TunderSB=Topo[Brink[0]:Topo.size+1]
-        xx=np.arange(1,TunderSB.size-1)
+        xx=np.arange(1,TunderSB.size)
         y=Topo[Brink[0]]
         yy=TunderSB[1:TunderSB.size+1]
         SBt=0.5
         SBa=-(yy-y)
         SBb=+(yy-y)
         #solve the clamped spline equation to get max slope at midpoint
-        slope=np.tan(  ((yy-y)/(xx)) + ((0.25)*((SBb-SBa)/(xx))) )
-        reattachment=np.argwhere(slope>-0.245)
+        slope=np.arctan(  ((yy-y)/(xx)) + ((0.25)*((SBb-SBa)/(xx))) )
         #pick first value of mid point slope below 0.14
-        #SLOPE IS TOO HIGH AT FIRST CELL???
         reattachment=np.argwhere(slope > -0.245)
 
         #use that index, and add it to the Brink
