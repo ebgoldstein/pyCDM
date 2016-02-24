@@ -86,24 +86,34 @@ def shearfield(Topo, Veg, Tau):
         #MAX slope is 14 degrees or 0.244346 radians (Kroy et al 2002)
         #find index of the brink
         Brink=np.argwhere(SepBubble == 1);
+
+        #note that this technique works for 1 Sep Bubble
+        if Brink.size>1:
+            print ('more than 1 brink!!')
         #return the topography after the Brink
-        #note that this next line works for only a 1D array
+        #note that this next line works for only a 1D array currently
         TunderSB=Topo[Brink[0]:Topo.size+1]
-        xx=np.arange(1,TunderSB.size)
-        y=Topo[Brink[0]]
-        yy=TunderSB[1:TunderSB.size+1]
+        xx=dx*np.arange(1,TunderSB.size)
+        y=dx*Topo[Brink[0]]
+        yy=dx*TunderSB[1:TunderSB.size+1]
         SBt=0.5
         SBa=-(yy-y)
         SBb=+(yy-y)
         #solve the clamped spline equation to get max slope at midpoint
-        slope=np.arctan(  ((yy-y)/(xx)) + ((0.25)*((SBb-SBa)/(xx))) )
+        slope=np.arctan(((yy-y)/(xx)) + ((0.25)*((SBb-SBa)/(xx))) )
         #pick first value of mid point slope below 0.14
         reattachment=np.argwhere(slope > -0.245)
 
-        #use that index, and add it to the Brink
-
         #interpolate to make the seperation bubble
+        SepBubbleL=dx*np.arange(1,reattachment[0])
+        yy=Topo[Brink[0]+reattachment[0]]
+        SBa=-(yy-y)
+        SBb=+(yy-y)
+        SBt=SepBubbleL/(reattachment[0])
+        SepBubbleH=((1-SBt)*y)+ (SBt*yy) + (SBt*(1-SBt)*((SBa*(1-SBt))+(SBb*SBt)))
 
+        #use that index, and add it to the Brink
+        SepBubble[Brink[0]:reattachment[0]+1]=SepBubbleH
 
         #make new combined surface
         Topowind=np.maximum(SepBubble,Topo)
