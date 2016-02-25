@@ -99,7 +99,8 @@ def shearfield(Topo, Veg, Tau):
         SBt=0.5
         SBa=-(yy-y)
         SBb=+(yy-y)
-        #solve the clamped spline equation to get max slope at midpoint
+        #solve the derivative of the clamped spline equation to get max slope at midpoint
+        #https://en.wikipedia.org/wiki/Spline_interpolation
         slope=np.arctan(((yy-y)/(xx)) + ((0.25)*((SBb-SBa)/(xx))) )
         #pick first value of mid point slope below 0.14
         reattachment=np.argwhere(slope > -0.245)
@@ -123,14 +124,28 @@ def shearfield(Topo, Veg, Tau):
 
     #calculate tau perterbation using Weng et al 1991
     if ny=1: #Weng et al 1991 EQN 2.8
-        TauPert=
+        H
+        L
+        U
+        l
+        sigmazero
+        znaught
+        zeta
+        Knaught
+        i
+        k
+        zetanaught
 
+        Wtermone = -2*(H/L)/(U*U*l)
+        Wparen=
+        #calculate the perturbation
+        TauPert= Wtermone*sigmazero*Wparen
 
     else:   #Weng et al 1991 EQN 2.14a,b
 
 
     #calculate total tau by adding the perturbation
-    Ttau=Tau+TauPert
+    Ttau=np.absolute(Tau)*((Tau/(np.absolute(Tau)))+TauPert)
 
     #all locations of seperation bubble sites have zero tau
     Stau=np.where((SepBubble==1),0,Ttau)
@@ -226,7 +241,7 @@ def runCDM:
 
     #for initial time: timestep: final time
 
-       #0. Set the wind
+       #0. Set the wind for the timestep
        Tau=np.ones((ny,nx))*(ustar*ustar*rho_fluid)
 
        #1. Compute the stress field
