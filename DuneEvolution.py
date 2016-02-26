@@ -145,7 +145,7 @@ def shearfield(Topo, Veg, Tau):
 
 
     #calculate total tau by adding the perturbation
-    Ttau=np.absolute(Tau)*((Tau/(np.absolute(Tau)))+TauPert)
+    Ttau=Tau+((np.absolute(Tau))*TauPert)
 
     #all locations of seperation bubble sites have zero tau
     Stau=np.where((SepBubble==1),0,Ttau)
@@ -162,9 +162,24 @@ def shearfield(Topo, Veg, Tau):
 Step 2: sand flux  field
 
 to do:
-    -All of it
+    -mean grain velocity at saturation
+    -calculate local (height integrated) flux
 """
 def sandfluxfield(Topo, Tau):
+
+    ustarfield= np.sqrt(Tau/rho_fluid)
+
+    #mean grain velocity at saturation
+    vs=
+
+    #saturated length
+    ls=((2*vs*vs*alpha)/(gamma*g)) / (np.power((ustarfield/u_star_t),2)-1)
+
+    #saturated flux
+    qs=((2*vs*alpha)/(g)) * rho_fluid * u_star_t * u_star_t * (np.power((ustarfield/u_star_t),2)-1)
+
+    #calculate local height integrated flux
+    Flux=
 
 return Flux
 
@@ -172,10 +187,15 @@ return Flux
 Step 3: flux divergence and building topo
 
 to do:
-    -All of it
+    -check the signs
+    -front of the beach should not erode (infinite source; Duran and Moore 2013 )
 
 """
 def fluxgradient(Topo,Flux):
+
+    dhdt = - (Flux / rho_sand)
+
+    Topo = Topo + dhdt
 
     return Topo, dhdt
 
