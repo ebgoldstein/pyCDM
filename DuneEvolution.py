@@ -1,5 +1,7 @@
 """
 rewrite of CDM by EBG 2/16
+The MIT License (MIT)
+Copyright (c) 2016 Evan B. Goldstein
 
 The CDM operates by iterating over 5 operations with 2 states:
 
