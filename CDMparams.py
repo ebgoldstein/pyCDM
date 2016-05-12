@@ -2,7 +2,8 @@
 Some relevant CDM parameters and constants. This can act as the parameter file.
 
 rewrite of CDM by EBG 2/16
-
+The MIT License (MIT)
+Copyright (c) 2016 Evan B. Goldstein
 """
 import numpy as np
 import CDMfunctions as cdmfns
